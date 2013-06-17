@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import edu.stanford.nlp.ling.Tag;
+import edu.stanford.nlp.trees.LabeledScoredTreeNode;
 import edu.stanford.nlp.trees.Tree;
 
 public class ExtractionService {
@@ -22,13 +24,12 @@ public class ExtractionService {
 		log.info(tree.children()[0].children()[0].label());
 	}
 	
-	public Tree extractTriplet(Tree sentence) {
-		Tree subjectTree = extractSubject(sentence.firstChild().firstChild());
-		Tree predicateTree = extractPredicate(sentence.firstChild().lastChild());
-		Tree objectTree = extractObject(sentence.firstChild().lastChild());
-		Tree triplet = sentence.treeSkeletonCopy();
-		
-		triplet.removeChild(0);
+	public Tree extractTriplet(Tree root) {
+		Tree triplet = new LabeledScoredTreeNode(new Tag("ROOT"));
+
+		Tree subjectTree = extractSubject(root.firstChild().firstChild());
+		Tree predicateTree = extractPredicate(root.firstChild().lastChild());
+		Tree objectTree = extractObject(root.firstChild().lastChild());
 		
 		if(subjectTree == null || predicateTree == null || objectTree == null)
 			return null;
@@ -62,8 +63,8 @@ public class ExtractionService {
 	private Tree extractObject(Tree vpSubtree) {
 		String wordType;
 		Tree object = null;
-		int currentSibling = 0;
 		List<Tree> siblings = new ArrayList<Tree>();
+		int currentSibling = 0;
 		
 		findDecendents(vpSubtree, siblings);
 		
@@ -101,6 +102,7 @@ public class ExtractionService {
 		Tree verb = null;
 		
 		for(int i = 0; i < vpSubtree.numChildren(); i++) {
+			
 			if(vpSubtree.getChild(i).value().equalsIgnoreCase("VP"))
 				return findDeepestVerb(vpSubtree.getChild(i));
 			else if(isVerb(vpSubtree.getChild(i).value()))
@@ -160,9 +162,9 @@ public class ExtractionService {
 	
 	public static void main(String[] args) {
 		ExtractionService extractor = new ExtractionService();
-		Tree tree = extractor.parser.parse("A rare black squirrel has become a regular visitor to a suburban garden").get(0);
+		Tree root = extractor.parser.parse("A rare black squirrel has become a regular visitor to a suburban garden").get(0);
 		
-		Tree output = extractor.extractTriplet(tree);
+		Tree output = extractor.extractTriplet(root);
 		
 		output.printLocalTree();
 	}
