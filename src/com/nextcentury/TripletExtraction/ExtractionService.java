@@ -27,6 +27,11 @@ public class ExtractionService {
 	public Tree extractTriplet(Tree root) {
 		Tree triplet = new LabeledScoredTreeNode(new Tag("ROOT"));
 
+		/*
+		 * The trees that the Stanford parser generates always have a root node
+		 * called ROOT and exactly one child node called S which represents the sentence.
+		 * Thus, to get the NP and VP subtrees, we must get both grand children of ROOT.
+		 */
 		Tree subjectTree = extractSubject(root.firstChild().firstChild());
 		Tree predicateTree = extractPredicate(root.firstChild().lastChild());
 		Tree objectTree = extractObject(root.firstChild().lastChild());
