@@ -48,12 +48,12 @@ public class ExtractionService {
 
 	private Tree extractSubject(Tree npSubtree) {
 
-		return findFirstNoun(npSubtree).firstChild();
+		return findFirstNoun(npSubtree);
 	}
 
 	private Tree extractPredicate(Tree vpSubtree) {
 
-		return findDeepestVerb(vpSubtree).firstChild();
+		return findDeepestVerb(vpSubtree);
 	}
 
 	private Tree extractObject(Tree vpSubtree) {
@@ -68,9 +68,9 @@ public class ExtractionService {
 			wordType = siblings.get(currentSibling).value();
 
 			if(wordType.equalsIgnoreCase("NP") || wordType.equalsIgnoreCase("PP"))
-				object = findFirstNoun(siblings.get(currentSibling)).firstChild();
+				object = findFirstNoun(siblings.get(currentSibling));
 			else
-				object = findFirstAdjective(siblings.get(currentSibling)).firstChild();
+				object = findFirstAdjective(siblings.get(currentSibling));
 
 			currentSibling++;
 		}
@@ -90,7 +90,7 @@ public class ExtractionService {
 			currentChild++;
 		}
 
-		return noun;
+		return noun.firstChild();
 	}
 
 	private Tree findDeepestVerb(Tree vpSubtree) {
@@ -104,7 +104,7 @@ public class ExtractionService {
 				verb = vpSubtree.getChild(i);
 		}
 
-		return verb;
+		return verb.firstChild();
 	}
 
 	private Tree findFirstAdjective(Tree tree) {
@@ -119,7 +119,7 @@ public class ExtractionService {
 			currentChild++;
 		}
 
-		return adjective;
+		return adjective.firstChild();
 	}
 
 	private void findDecendents(Tree tree, List<Tree> siblings) {
@@ -136,7 +136,6 @@ public class ExtractionService {
 					findDecendents(tree.getChild(i), siblings);
 			}
 		}
-
 	}
 
 	private boolean isNoun(String wordType) {
