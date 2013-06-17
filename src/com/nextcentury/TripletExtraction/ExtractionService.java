@@ -67,8 +67,14 @@ public class ExtractionService {
 		while(object == null && currentSibling < siblings.size()) {
 			wordType = siblings.get(currentSibling).value();
 
-			if(wordType.equalsIgnoreCase("NP") || wordType.equalsIgnoreCase("PP"))
+			if(wordType.equalsIgnoreCase("NP"))
 				object = findFirstNoun(siblings.get(currentSibling));
+			else if(wordType.equalsIgnoreCase("PP"))
+				/*
+				 * Here we make an assumption that the last child of a PP will always
+				 * be a NP. For now, this works, but it may have to change later.
+				 */
+				object = findFirstNoun(siblings.get(currentSibling).lastChild());
 			else
 				object = findFirstAdjective(siblings.get(currentSibling));
 
@@ -90,6 +96,9 @@ public class ExtractionService {
 			currentChild++;
 		}
 
+		if(noun == null)
+			return noun;
+		
 		return noun.firstChild();
 	}
 
@@ -103,6 +112,9 @@ public class ExtractionService {
 			else if(isVerb(vpSubtree.getChild(i).value()))
 				verb = vpSubtree.getChild(i);
 		}
+
+		if(verb == null)
+			return verb;
 
 		return verb.firstChild();
 	}
@@ -119,6 +131,9 @@ public class ExtractionService {
 			currentChild++;
 		}
 
+		if(adjective == null)
+			return adjective;
+		
 		return adjective.firstChild();
 	}
 
