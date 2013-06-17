@@ -25,7 +25,7 @@ public class ExtractionService {
 	}
 	
 	public Tree extractTriplet(Tree root) {
-		Tree triplet = new LabeledScoredTreeNode(new Tag("ROOT"));
+		Tree triplet = new LabeledScoredTreeNode(new Tag("TRIPLET"));
 
 		/*
 		 * The trees that the Stanford parser generates always have a root node
@@ -80,6 +80,8 @@ public class ExtractionService {
 				object = findFirstNoun(siblings.get(currentSibling)).firstChild();
 			else
 				object = findFirstAdjective(siblings.get(currentSibling)).firstChild();
+			
+			currentSibling++;
 		}
 		
 		if(object == null)
@@ -171,6 +173,9 @@ public class ExtractionService {
 		
 		Tree output = extractor.extractTriplet(root);
 		
-		output.printLocalTree();
+		if(output == null)
+			System.err.println("ERROR: Could not find triplet");
+		else
+			output.printLocalTree();
 	}
 }
