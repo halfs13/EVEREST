@@ -24,9 +24,7 @@ public class ExtractionService {
 		log.info(tree.children()[0].children()[0].label());
 	}
 
-	public Tree extractTriplet(Tree root) {
-		Tree triplet = new LabeledScoredTreeNode(new Tag("TRIPLET"));
-
+	public Triplet extractTriplet(Tree root) {
 		/*
 		 * The trees that the Stanford parser generates always have a root node
 		 * called ROOT and exactly one child node called S which represents the sentence.
@@ -39,9 +37,7 @@ public class ExtractionService {
 		if(subjectTree == null || predicateTree == null || objectTree == null)
 			return null;
 
-		triplet.addChild(subjectTree);
-		triplet.addChild(predicateTree);
-		triplet.addChild(objectTree);
+		Triplet triplet = new Triplet(subjectTree, predicateTree, objectTree);
 
 		return triplet;
 	}
@@ -173,11 +169,11 @@ public class ExtractionService {
 		ExtractionService extractor = new ExtractionService();
 		Tree root = extractor.parser.parse("A rare black squirrel has become a regular visitor to a suburban garden").get(0);
 
-		Tree output = extractor.extractTriplet(root);
+		Triplet output = extractor.extractTriplet(root);
 
 		if(output == null)
 			System.err.println("ERROR: Could not find triplet");
 		else
-			output.printLocalTree();
+			output.toString();
 	}
 }
