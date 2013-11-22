@@ -8,7 +8,7 @@ module.exports = function(app, models, io, logger) {
 	var confirmedReportService = new ConfirmedReportService(models, io, logger);
 
 	/**
-	 * List all Confirmed Reports 
+	 * List all Confirmed Reports
 	 */
 	app.get("/confirmed-report/?", function(req, res) {
 		if (logger.DO_LOG) {
@@ -32,7 +32,7 @@ module.exports = function(app, models, io, logger) {
 			}
 		});
 	});
-	
+
 	/**
 	 * List all indexes for the Confirmed Report object
 	 */
@@ -50,15 +50,15 @@ module.exports = function(app, models, io, logger) {
 			}
 		});
  	});
-	
+
 	/**
 	 * List createdDate for all of the Confirmed Reports (in milliseconds)
 	 */
 	app.get("/confirmed-report/dates/?", function(req, res) {
-		if (logger.DO_LOG) { 
+		if (logger.DO_LOG) {
 			logger.info("Request for list of dates for all Confirmed Reports");
 		}
-		
+
 		confirmedReportService.findDates(function(dates) {
 			if (!dates) {
 				responseHandler.send500(res, "Error getting dates for Confirmed Reports");
@@ -96,12 +96,12 @@ module.exports = function(app, models, io, logger) {
 			}
 		});
 	});
-	
+
 	/**
 	 * Review a Confirmed Report specified by id
 	 * /confirmed-report/:{param_name}(contents go in param_name)
 	 */
-	app.get("/confirmed-report/:id([0-9a-f]+)", function(req, res) {     
+	app.get("/confirmed-report/:id([0-9a-f]+)", function(req, res) {
 		if (logger.DO_LOG ) {
 			logger.info("Request for Confirmed Report " + req.params.id);
 		}
@@ -147,9 +147,6 @@ module.exports = function(app, models, io, logger) {
 		});
 	});
 
-	/**
-	 * 
-	 */
 	app.get("/confirmed-report/full/?", function(req, res) {
 		if (logger.DO_LOG) {
 			logger.info("Request for a list of all Confirmed Reports flattened");
@@ -169,14 +166,11 @@ module.exports = function(app, models, io, logger) {
 		});
 	});
 
-	/**
-	 * 
-	 */
-	app.get("/confirmed-report/full/:id([0-9a-f]+)", function(req, res) {     
+	app.get("/confirmed-report/full/:id([0-9a-f]+)", function(req, res) {
 		if (logger.DO_LOG) {
 			logger.info("Request for flattened Confirmed Report " + req.params.id);
 		}
-		
+
 		confirmedReportService.get(req.params.id, function(err, docs) {
 			if (err) {
 				logger.error("Error getting flattened Confirmed Report", err);
@@ -189,7 +183,7 @@ module.exports = function(app, models, io, logger) {
 			}
 		});
 	});
-	
+
 	/**
 	 * Delete a single Confirmed Report with specified id
 	 */
@@ -203,7 +197,7 @@ module.exports = function(app, models, io, logger) {
 			res.end();
 		});
 	});
-	
+
 	/**
 	 * Delete all Confirmed Reports
 	 */
@@ -211,7 +205,7 @@ module.exports = function(app, models, io, logger) {
 		if (logger.DO_LOG) {
 			logger.info("Deleting all Confirmed Report entries");
 		}
-		
+
 		confirmedReportService.del({}, function(err, count) {
 			res.jsonp({deleted_count: count});
 			res.end();
