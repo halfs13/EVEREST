@@ -32,6 +32,21 @@ module.exports = function(app, models, io, logger) {
 		});
 	});
 
+	app.get('/alpha-report/tags/?', function(req, res){
+		if (logger.DO_LOG) {
+			logger.info("Request for list of tags for the Alpha Report object");
+		}
+		
+		alphaReportService.getTags(function(err, tags) {
+			if (!tags) {
+				responseHandler.send500(res, "Error getting tags for the Alpha Report object");
+			} else {
+				res.jsonp(tags);
+				res.end();
+			}
+		});
+	});
+
 	/**
 	 * List all indexes for the Alpha Report object
 	 */
@@ -136,7 +151,7 @@ module.exports = function(app, models, io, logger) {
 		alphaReportService.create(req.body, function(err, val, newAlphaReport) {
 			if (err) {
 				logger.error("Error saving Alpha Report", err);
-				responseHandler.send500(res, "Error saving Alpha Report");
+				responseHandler.send500(res, "Error saving Alpha Report " + err);
 			} else if (!val.valid) {
 				logger.info("Invalid Alpha Report " + JSON.stringify(val.errors));
 				responseHandler.send500(res, "Invalid Alpha Report " + JSON.stringify(val.errors));
@@ -181,7 +196,7 @@ module.exports = function(app, models, io, logger) {
 		alphaReportService.update(req.params.id, req.body, function(err, val, updated) {
 			if (err) {
 				logger.error("Error updating Alpha Report", err);
-				responseHandler.send500(res, "Error updating Alpha Report");
+				responseHandler.send500(res, "Error updating Alpha Report " + err);
 			} else if (val && !val.valid) {
 				logger.info("Invalid Alpha Report " + JSON.stringify(val.errors));
 				responseHandler.send500(res, " Invalid Alpha Report " + JSON.stringify(val.errors));

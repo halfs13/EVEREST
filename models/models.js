@@ -20,14 +20,9 @@ var commentModel = require('./comment/model.js');
 exports.comment = commentModel.comment;
 exports.commentValidatoin = commentModel.commentValidatoin;
 
-//confirmed report
-var confirmedReportModel = require('./confirmed_report/model.js');
-exports.confirmedReport = confirmedReportModel.confirmedReport;
-exports.confirmedReportValidation = confirmedReportModel.confirmedReportValidation;
-
 //event
 var eventModel = require('./event/model.js');
-exports.event = eventModel.event;
+exports.event_ = eventModel.event_;
 exports.eventValidation = eventModel.eventValidation;
 
 //incident
@@ -49,6 +44,11 @@ exports.profileValidation = profileModel.profileValidation;
 var rawFeedModel = require('./raw_feed/model.js');
 exports.rawFeed = rawFeedModel.rawFeed;
 exports.rawFeedValidation = rawFeedModel.rawFeedValidation;
+
+//report
+var reportModel = require('./report/model.js');
+exports.report = reportModel.report;
+exports.reportValidation = reportModel.reportValidation;
 
 //reporter
 var reporterModel = require('./reporter/model.js');

@@ -97,7 +97,7 @@ module.exports = function(app, models, io, logger) {
 		placeService.create(req.body, function(err, val, newPlace) {
 			if (err) {
 				logger.error("Error saving Place", err);
-				responseHandler.send500(res, "Error saving Place");
+				responseHandler.send500(res, "Error saving Place " + err);
 			} else if (!val.valid) {
 				logger.info("Invalid Place " + JSON.stringify(val.errors));
 				responseHandler.send500(res, "Invalid Place " + JSON.stringify(val.errors));
@@ -164,10 +164,10 @@ module.exports = function(app, models, io, logger) {
 		placeService.update(req.params.id, req.body, function(err, val, updated) {
 			if (err) {
 				logger.error("Error updating Place ", err);
-				responseHandler.send500(res, "Error updating Place");
+				responseHandler.send500(res, "Error updating Place " + err);
 			} else if (val && !val.valid) {
 				logger.info("Invalid Place " + JSON.stringify(val.errors));
-				responseHandler.send500(res, "Invalid Place");
+				responseHandler.send500(res, "Invalid Place " + JSON.stringify(val.errors));
 			} else {
 				logger.info("Place updated " + JSON.stringify(updated));
 				res.jsonp({_id: updated._id});
