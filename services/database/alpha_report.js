@@ -70,6 +70,19 @@ module.exports = function(models, io, logger) {
 		});
 	};
 
+	/**
+	 * A callback function to be executed upon completion of the getTags method
+	 * @callback AlphaReportService~getTagsCallback
+	 * //FIXME what are the params on this callback
+	 */
+
+	/**
+	 * Get the count of the words in the alpha report message bodies
+	 * @method getTags
+	 * @param {AlphaReportService~getTagsCallback} callback Callback function to execute
+	 * 		upon completion of totaling the word counts.
+	 * @memberof AlphaReportService#
+	 */
 	me.getTags = function(callback) {
 		var o = {
 			map : function () {
@@ -118,9 +131,17 @@ module.exports = function(models, io, logger) {
 	};
 
 
+	/**
+	 * Callback to be executed upon completion of getDataTypes method
+	 * @callback AlphaReportService~getDateTypesCallback
+	 * //FIXME what are the params
+	 */
 
 	/**
-	*	Returns a list of date attributes for Alpha Report
+	* Returns a list of date attributes for Alpha Report
+	* @method getDateTypes
+	* @param {AlphaReportService~getDateTypesCallback}
+	* @memberof AlphaReportService#
 	*/
 	me.getDateTypes = function(callback) {
 		var keys = Object.keys(models.alphaReport.schema.paths);
