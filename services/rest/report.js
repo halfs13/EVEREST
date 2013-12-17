@@ -8,7 +8,7 @@ module.exports = function(app, models, io, logger) {
 	var reportService = new ReportService(models, io, logger);
 
 	/**
-	 * List all Reports 
+	 * List all Reports
 	 */
 	app.get("/report/?", function(req, res) {
 		if (logger.DO_LOG) {
@@ -32,7 +32,7 @@ module.exports = function(app, models, io, logger) {
 			}
 		});
 	});
-	
+
 	/**
 	 * List all indexes for the Report object
 	 */
@@ -50,15 +50,15 @@ module.exports = function(app, models, io, logger) {
 			}
 		});
  	});
-	
+
 	/**
 	 * List createdDate for all of the Reports (in milliseconds)
 	 */
 	app.get("/report/dates/?", function(req, res) {
-		if (logger.DO_LOG) { 
+		if (logger.DO_LOG) {
 			logger.info("Request for list of dates for all Reports");
 		}
-		
+
 		reportService.findDates(function(dates) {
 			if (!dates) {
 				responseHandler.send500(res, "Error getting dates for Reports");
@@ -96,12 +96,12 @@ module.exports = function(app, models, io, logger) {
 			}
 		});
 	});
-	
+
 	/**
 	 * Review a Report specified by id
 	 * /report/:{param_name}(contents go in param_name)
 	 */
-	app.get("/report/:id([0-9a-f]+)", function(req, res) {     
+	app.get("/report/:id([0-9a-f]+)", function(req, res) {
 		if (logger.DO_LOG ) {
 			logger.info("Request for Report " + req.params.id);
 		}
@@ -147,9 +147,6 @@ module.exports = function(app, models, io, logger) {
 		});
 	});
 
-	/**
-	 * 
-	 */
 	app.get("/report/full/?", function(req, res) {
 		if (logger.DO_LOG) {
 			logger.info("Request for a list of all Reports flattened");
@@ -169,14 +166,11 @@ module.exports = function(app, models, io, logger) {
 		});
 	});
 
-	/**
-	 * 
-	 */
-	app.get("/report/full/:id([0-9a-f]+)", function(req, res) {     
+	app.get("/report/full/:id([0-9a-f]+)", function(req, res) {
 		if (logger.DO_LOG) {
 			logger.info("Request for flattened Report " + req.params.id);
 		}
-		
+
 		reportService.get(req.params.id, function(err, docs) {
 			if (err) {
 				logger.error("Error getting flattened Report", err);
@@ -189,7 +183,7 @@ module.exports = function(app, models, io, logger) {
 			}
 		});
 	});
-	
+
 	/**
 	 * Delete a single Report with specified id
 	 */
@@ -203,7 +197,7 @@ module.exports = function(app, models, io, logger) {
 			res.end();
 		});
 	});
-	
+
 	/**
 	 * Delete all Reports
 	 */
@@ -211,7 +205,7 @@ module.exports = function(app, models, io, logger) {
 		if (logger.DO_LOG) {
 			logger.info("Deleting all Report entries");
 		}
-		
+
 		reportService.del({}, function(err, count) {
 			res.jsonp({deleted_count: count});
 			res.end();
